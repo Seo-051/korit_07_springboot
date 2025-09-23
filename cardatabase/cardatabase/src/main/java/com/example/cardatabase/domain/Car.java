@@ -1,33 +1,40 @@
-package com.example.cardatabase.domin;
+package com.example.cardatabase.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
+@Data
 @Entity
+
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String brand, model, color, registationNuber;
-
+    private String brand, model, color, registrationNumber;
     private int modelYear, price;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
+    private Owner owner;
 
-    // JPA는 기본 생성자가 필수적으로 요구됨
+    public Owner getOwner() {
+        return owner;
+    }
 
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
 
-
-public Car(String brand, String model, String color, String registationNuber, int modelYear, int price) {
+    public Car(String brand, String model, String color, String registrationNumber, int modelYear, int price, Owner owner) {
         this.brand = brand;
         this.model = model;
         this.color = color;
-        this.registationNuber = registationNuber;
+        this.registrationNumber = registrationNumber;
         this.modelYear = modelYear;
         this.price = price;
+        this.owner = owner;
     }
+
+
 }
